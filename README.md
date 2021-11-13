@@ -1,4 +1,4 @@
-# Miniquad
+# OROM Miniquad
 
 [![Github Actions](https://github.com/not-fl3/miniquad/workflows/Cross-compile/badge.svg)](https://github.com/not-fl3/miniquad/actions?query=workflow%3A)
 [![Docs](https://docs.rs/miniquad/badge.svg?version=0.3.0-alpha)](https://docs.rs/miniquad/0.3.0-alpha/miniquad/index.html)
