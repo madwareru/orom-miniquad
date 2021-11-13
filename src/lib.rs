@@ -77,7 +77,14 @@ impl Context {
 
     /// Show or hide the mouse cursor
     pub fn show_mouse(&self, shown: bool) {
-        unsafe { sapp::sapp_show_mouse(shown); }
+        #[cfg(target_os = "macos")]
+        {
+            unsafe{ sapp::sapp_show_mouse_impl(shown); }
+        }
+        #[cfg(not(target_os = "macos"))]
+        {
+            unsafe { sapp::sapp_show_mouse(shown); }
+        }
     }
 
     /// Set the mouse cursor icon.
