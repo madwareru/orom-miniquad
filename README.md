@@ -6,6 +6,8 @@
 [![Discord chat](https://img.shields.io/discord/710177966440579103.svg?label=discord%20chat)](https://discord.gg/WfEp6ut)
 [![Matrix](https://img.shields.io/matrix/quad-general:matrix.org?label=matrix%20chat)](https://matrix.to/#/#quad-general:matrix.org)
 
+This is a fork of Miniquad made specifically for the needs of Open Rage Of Mages project. It's intended to remove web targets, as well as mobile, and provide reacher support for modern desktop target features. It's not intended to be backward compatible with Miniquad
+
 Miniquad is safe and cross-platform rendering library focused on portability and low-end platforms support
 
 API is highly inspired by [sokol-gfx](https://github.com/floooh/sokol) ([sokol overview](https://floooh.github.io/2017/07/29/sokol-gfx-tour.html), [2019 update](https://floooh.github.io/2019/01/12/sokol-apply-pipeline.html)). Implementation influenced by [crayon](https://docs.rs/crayon/0.7.1/crayon/video/index.html).
