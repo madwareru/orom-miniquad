@@ -1,4 +1,4 @@
-use miniquad::*;
+use orom_miniquad::*;
 
 struct Stage {
     inited: bool,
@@ -41,7 +41,7 @@ impl EventHandler for Stage {
 }
 
 fn main() {
-    miniquad::start(conf::Conf::default(), |ctx| {
+    orom_miniquad::start(conf::Conf::default(), |ctx| {
         UserData::owning(Stage { inited: false }, ctx)
     });
 }

@@ -1134,6 +1134,14 @@ static NSTimer* _sapp_macos_timer_obj;
 #endif
 static uint32_t _sapp_macos_flags_changed_store;
 
+_SOKOL_PRIVATE void _sapp_macos_show_mouse(bool shown) {
+    if (shown) {
+        [NSCursor unhide];
+    } else {
+        [NSCursor hide];
+    }
+}
+
 _SOKOL_PRIVATE void _sapp_macos_init_keytable(void) {
     _sapp.keycodes[0x1D] = SAPP_KEYCODE_0;
     _sapp.keycodes[0x12] = SAPP_KEYCODE_1;
@@ -7293,8 +7301,8 @@ SOKOL_API_IMPL bool sapp_keyboard_shown(void) {
 SOKOL_API_IMPL void sapp_show_mouse(bool shown) {
     #if defined(_WIN32)
     _sapp_win32_show_mouse(shown);
-    #else
-    _SOKOL_UNUSED(shown);
+    #elif defined(__APPLE__)
+    _sapp_macos_show_mouse(shown);
     #endif
 }
 

@@ -1,4 +1,4 @@
-use miniquad::*;
+use orom_miniquad::*;
 
 struct Stage {
     ctx: Context,
@@ -12,7 +12,7 @@ impl EventHandlerFree for Stage {
 }
 
 fn main() {
-    miniquad::start(
+    orom_miniquad::start(
         conf::Conf {
             window_title: "Miniquad".to_string(),
             window_width: 1024,

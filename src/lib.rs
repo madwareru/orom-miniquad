@@ -1,40 +1,24 @@
-#[cfg(target_os = "android")]
-extern crate sapp_android as sapp;
-
-#[cfg(target_os = "android")]
-pub use sapp_android;
-
 #[cfg(target_os = "macos")]
 extern crate sapp_darwin as sapp;
-#[cfg(not(any(
-    target_os = "linux",
-    target_os = "macos",
-    target_os = "ios",
-    target_os = "android",
-    target_arch = "wasm32",
-    windows
-)))]
-extern crate sapp_dummy as sapp;
-#[cfg(target_os = "ios")]
-extern crate sapp_ios as sapp;
-#[cfg(all(target_os = "linux", feature = "kms"))]
-extern crate sapp_kms as sapp;
-#[cfg(all(target_os = "linux", not(feature = "kms")))]
+
+#[cfg(target_os = "linux")]
 extern crate sapp_linux as sapp;
 
-#[cfg(target_arch = "wasm32")]
-extern crate sapp_wasm as sapp;
 #[cfg(windows)]
 extern crate sapp_windows as sapp;
+
+#[cfg(not(any(
+target_os = "linux",
+target_os = "macos",
+windows
+)))]
+extern crate sapp_dummy as sapp;
 
 pub mod clipboard;
 pub mod conf;
 mod event;
 pub mod fs;
 pub mod graphics;
-
-#[cfg(feature = "log-impl")]
-pub mod log;
 
 pub use event::*;
 
@@ -44,21 +28,7 @@ pub use sapp::gl;
 
 use std::ffi::CString;
 
-#[deprecated(
-    since = "0.3",
-    note = "libc rand is slow and incosistent across platforms. Please use quad-rnd crate instead."
-)]
-pub unsafe fn rand() -> i32 {
-    sapp::rand()
-}
-#[deprecated(
-    since = "0.3",
-    note = "libc rand is slow and incosistent across platforms. Please use quad-rnd crate instead."
-)]
-pub const RAND_MAX: u32 = sapp::RAND_MAX;
-
 pub mod date {
-    #[cfg(not(target_arch = "wasm32"))]
     pub fn now() -> f64 {
         use std::time::SystemTime;
 
@@ -66,11 +36,6 @@ pub mod date {
             .duration_since(SystemTime::UNIX_EPOCH)
             .unwrap_or_else(|e| panic!("{}", e));
         time.as_secs_f64()
-    }
-
-    #[cfg(target_arch = "wasm32")]
-    pub fn now() -> f64 {
-        unsafe { sapp::now() }
     }
 }
 
@@ -80,11 +45,7 @@ impl Context {
     /// be called when the user clicks the 'Ok' button in a 'Really Quit?'
     /// dialog box
     pub fn quit(&self) {
-        // its not possible to quit wasm anyway
-        #[cfg(not(target_arch = "wasm32"))]
-        unsafe {
-            sapp::sapp_quit();
-        }
+        unsafe { sapp::sapp_quit(); }
     }
 
     /// Calling request_quit() will trigger "quit_requested_event" event , giving
@@ -93,11 +54,7 @@ impl Context {
     /// If the event handler callback does nothing, the application will be quit as usual.
     /// To prevent this, call the function "cancel_quit()"" from inside the event handler.
     pub fn request_quit(&self) {
-        // its not possible to quit wasm anyway
-        #[cfg(not(target_arch = "wasm32"))]
-        unsafe {
-            sapp::sapp_request_quit();
-        }
+        unsafe { sapp::sapp_request_quit(); }
     }
 
     /// Cancels a pending quit request, either initiated
@@ -106,42 +63,30 @@ impl Context {
     /// function makes sense is from inside the event handler callback when
     /// the "quit_requested_event" event has been received
     pub fn cancel_quit(&self) {
-        // its not possible to quit wasm anyway
-        #[cfg(not(target_arch = "wasm32"))]
-        unsafe {
-            sapp::sapp_cancel_quit();
-        }
+        unsafe { sapp::sapp_cancel_quit(); }
     }
 
     /// Capture mouse cursor to the current window
-    /// On WASM this will automatically hide cursor
     /// On desktop this will bound cursor to windows border
     /// NOTICE: on desktop cursor will not be automatically released after window lost focus
     ///         so set_cursor_grab(false) on window's focus lost is recommended.
     /// TODO: implement window focus events
     pub fn set_cursor_grab(&self, grab: bool) {
-        #[cfg(not(target_os = "ios"))]
-        unsafe {
-            sapp::sapp_set_cursor_grab(grab);
-        }
+        unsafe { sapp::sapp_set_cursor_grab(grab); }
     }
 
     /// Show or hide the mouse cursor
     pub fn show_mouse(&self, shown: bool) {
-        unsafe {
-            sapp::sapp_show_mouse(shown);
-        }
+        unsafe { sapp::sapp_show_mouse(shown); }
     }
 
     /// Set the mouse cursor icon.
-    pub fn set_mouse_cursor(&self, _cursor_icon: CursorIcon) {
-        #[cfg(any(
-            target_arch = "wasm32",
-            all(target_os = "linux", not(feature = "kms")),
-            windows,
-        ))]
+    /// TODO: Do something to support in MacOS
+    #[allow(unused_variables)]
+    pub fn set_mouse_cursor(&self, cursor_icon: CursorIcon) {
+        #[cfg(any(target_os = "linux", windows, ))]
         unsafe {
-            sapp::sapp_set_mouse_cursor(match _cursor_icon {
+            sapp::sapp_set_mouse_cursor(match cursor_icon {
                 CursorIcon::Default => sapp::SAPP_CURSOR_DEFAULT,
                 CursorIcon::Help => sapp::SAPP_CURSOR_HELP,
                 CursorIcon::Pointer => sapp::SAPP_CURSOR_POINTER,
@@ -159,18 +104,16 @@ impl Context {
     }
 
     /// Set the application's window size.
+    /// TODO: Do something to support in MacOS and Linux
     #[allow(unused_variables)]
     pub fn set_window_size(&self, new_width: u32, new_height: u32) {
         #[cfg(not(any(
             target_os = "linux",
-            target_os = "macos",
-            target_os = "ios",
-            target_os = "android",
+            target_os = "macos"
         )))]
         unsafe {
             if sapp::sapp_is_fullscreen() {
-                #[cfg(feature = "log-impl")]
-                warn!("Unable to set windowsize while fullscreen: https://github.com/not-fl3/miniquad/issues/179");
+                eprintln!("Unable to set windowsize while fullscreen: https://github.com/not-fl3/miniquad/issues/179");
                 return;
             }
 
@@ -178,13 +121,12 @@ impl Context {
         }
     }
 
+    /// TODO: Do something to support in MacOS and Linux
     #[allow(unused_variables)]
     pub fn set_fullscreen(&self, fullscreen: bool) {
         #[cfg(not(any(
             target_os = "linux",
-            target_os = "macos",
-            target_os = "ios",
-            target_os = "android",
+            target_os = "macos"
         )))]
         unsafe {
             sapp::sapp_set_fullscreen(fullscreen);
@@ -193,20 +135,7 @@ impl Context {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Hash, Eq)]
-pub enum CursorIcon {
-    Default,
-    Help,
-    Pointer,
-    Wait,
-    Crosshair,
-    Text,
-    Move,
-    NotAllowed,
-    EWResize,
-    NSResize,
-    NESWResize,
-    NWSEResize,
-}
+pub enum CursorIcon { Default, Help, Pointer, Wait, Crosshair, Text, Move, NotAllowed, EWResize, NSResize, NESWResize, NWSEResize }
 
 pub enum UserData {
     Owning((Box<dyn EventHandler>, Context)),
@@ -375,7 +304,7 @@ extern "C" fn event(event: *const sapp::sapp_event, user_data: *mut ::std::os::r
 ///
 /// Variant wth EventHandler:
 /// ```no_run
-/// # use miniquad::*;
+/// # use orom_miniquad::*;
 /// struct Stage;
 ///
 /// impl EventHandler for Stage {
@@ -383,13 +312,13 @@ extern "C" fn event(event: *const sapp::sapp_event, user_data: *mut ::std::os::r
 ///     fn draw(&mut self, _ctx: &mut Context) {}
 /// }
 /// fn main() {
-///     miniquad::start(conf::Conf::default(), |ctx| UserData::owning(Stage, ctx));
+///     orom_miniquad::start(conf::Conf::default(), |ctx| UserData::owning(Stage, ctx));
 /// }
 /// ```
 ///
 /// Variant wth EventHandlerFree:
 /// ```no_run
-/// # use miniquad::*;
+/// # use orom_miniquad::*;
 /// struct Stage {
 ///     ctx: Context,
 /// }
@@ -398,7 +327,7 @@ extern "C" fn event(event: *const sapp::sapp_event, user_data: *mut ::std::os::r
 ///     fn draw(&mut self) {}
 /// }
 /// fn main() {
-///     miniquad::start(conf::Conf::default(), |ctx| UserData::free(Stage { ctx }));
+///     orom_miniquad::start(conf::Conf::default(), |ctx| UserData::free(Stage { ctx }));
 /// }
 /// ```
 pub fn start<F>(conf: conf::Conf, f: F)
@@ -418,7 +347,7 @@ where
     desc.high_dpi = conf.high_dpi as _;
     desc.window_title = title.as_ptr();
 
-    #[cfg(not(any(target_os = "macos", target_os = "ios", target_os = "android",)))]
+    #[cfg(not(target_os = "macos"))]
     {
         desc.window_resizable = conf.window_resizable as _;
     }

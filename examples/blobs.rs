@@ -1,4 +1,4 @@
-use miniquad::*;
+use orom_miniquad::*;
 
 #[repr(C)]
 struct Vec2 {
@@ -58,7 +58,7 @@ impl Stage {
             blobs_positions: [(0., 0.); 32],
         };
 
-        let time = miniquad::date::now();
+        let time = orom_miniquad::date::now();
 
         Stage {
             pipeline,
@@ -73,7 +73,7 @@ impl Stage {
 
 impl EventHandler for Stage {
     fn update(&mut self, _ctx: &mut Context) {
-        let time = miniquad::date::now();
+        let time = orom_miniquad::date::now();
         let delta = (time - self.last_frame) as f32;
         self.last_frame = time;
 
@@ -111,7 +111,7 @@ impl EventHandler for Stage {
     }
 
     fn draw(&mut self, ctx: &mut Context) {
-        self.uniforms.time = (miniquad::date::now() - self.start_time) as f32;
+        self.uniforms.time = (orom_miniquad::date::now() - self.start_time) as f32;
 
         ctx.begin_default_pass(Default::default());
         ctx.apply_pipeline(&self.pipeline);
@@ -125,14 +125,14 @@ impl EventHandler for Stage {
 }
 
 fn main() {
-    miniquad::start(conf::Conf::default(), |mut ctx| {
+    orom_miniquad::start(conf::Conf::default(), |mut ctx| {
         UserData::owning(Stage::new(&mut ctx), ctx)
     });
 }
 
 // based on: https://www.shadertoy.com/view/XsS3DV
 mod shader {
-    use miniquad::*;
+    use orom_miniquad::*;
 
     pub const VERTEX: &str = r#"#version 100
     attribute vec2 pos;

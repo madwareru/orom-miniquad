@@ -1,4 +1,5 @@
-//! OS clipboard abstraction
+//! OS clipboard abstraction.
+//! Seems to not work on MacOS
 
 use crate::Context;
 
@@ -26,19 +27,6 @@ mod linux_x11 {
     }
 }
 
-#[cfg(target_arch = "wasm32")]
-mod wasm {
-    use crate::Context;
-
-    pub fn get(_ctx: &mut Context) -> Option<String> {
-        sapp_wasm::clipboard_get()
-    }
-
-    pub fn set(_ctx: &mut Context, data: &str) {
-        sapp_wasm::clipboard_set(data);
-    }
-}
-
 #[cfg(target_os = "windows")]
 mod windows {
     use crate::Context;
@@ -52,11 +40,7 @@ mod windows {
     }
 }
 
-#[cfg(not(any(
-    all(target_os = "linux", feature = "sapp-linux"),
-    target_os = "windows",
-    target_arch = "wasm32"
-)))]
+#[cfg(not(any(target_os = "linux", target_os = "windows")))]
 mod dummy {
     use crate::Context;
 
@@ -67,25 +51,17 @@ mod dummy {
     pub fn set(_ctx: &mut Context, _data: &str) {}
 }
 
-#[cfg(not(any(
-    all(target_os = "linux", feature = "sapp-linux"),
-    target_os = "windows",
-    target_arch = "wasm32"
-)))]
+#[cfg(not(any(target_os = "linux", target_os = "windows")))]
 use dummy as clipboard;
-#[cfg(all(target_os = "linux", feature = "sapp-linux"))]
+
+#[cfg(target_os = "linux")]
 use linux_x11 as clipboard;
-#[cfg(target_arch = "wasm32")]
-use wasm as clipboard;
+
 #[cfg(target_os = "windows")]
 use windows as clipboard;
 
 /// Get current OS clipboard value
-pub fn get(ctx: &mut Context) -> Option<String> {
-    clipboard::get(ctx)
-}
+pub fn get(ctx: &mut Context) -> Option<String> { clipboard::get(ctx) }
 
 /// Save value to OS clipboard
-pub fn set(ctx: &mut Context, data: &str) {
-    clipboard::set(ctx, data);
-}
+pub fn set(ctx: &mut Context, data: &str) { clipboard::set(ctx, data); }

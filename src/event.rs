@@ -396,11 +396,11 @@ pub trait EventHandler {
     fn raw_mouse_motion(&mut self, _ctx: &mut Context, _dx: f32, _dy: f32) {}
 
     /// Window has been minimized
-    /// Right now is only implemented on Android, and is called on a Pause ndk callback
+    /// Right now is not implemented anywhere. TODO: implement
     fn window_minimized_event(&mut self, _ctx: &mut Context) {}
 
     /// Window has been restored
-    /// Right now is only implemented on Android, and is called on a Resume ndk callback
+    ///Right now is not implemented anywhere. TODO: implement
     fn window_restored_event(&mut self, _ctx: &mut Context) {}
 
     /// This event is sent when the userclicks the window's close button
@@ -447,11 +447,11 @@ pub trait EventHandlerFree {
     fn raw_mouse_motion(&mut self, _dx: f32, _dy: f32) {}
 
     /// Window has been minimized
-    /// Right now is only implemented on Android, and is called on a Pause ndk callback
+    /// Right now is not implemented anywhere. TODO: implement
     fn window_minimized_event(&mut self) {}
 
     /// Window has been restored
-    /// Right now is only implemented on Android, and is called on a Resume ndk callback
+    /// Right now is not implemented anywhere. TODO: implement
     fn window_restored_event(&mut self) {}
 
     /// This event is sent when the userclicks the window's close button

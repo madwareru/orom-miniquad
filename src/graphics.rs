@@ -335,7 +335,7 @@ struct ShaderInternal {
 ///
 /// Example:
 ///```
-///# use miniquad::{BlendState, BlendFactor, BlendValue, Equation};
+///# use orom_miniquad::{BlendState, BlendFactor, BlendValue, Equation};
 ///BlendState::new(
 ///    Equation::Add,
 ///    BlendFactor::Value(BlendValue::SourceAlpha),
@@ -1210,11 +1210,6 @@ pub fn load_shader(shader_type: GLenum, source: &str) -> Result<GLuint, ShaderEr
                 std::string::String::from_utf8_lossy(&error_message[0..max_length as usize - 1])
                     .to_string();
 
-            // On Wasm + Chrome, for unknown reason, string with zero-terminator is returned. On Firefox there is no zero-terminators in JavaScript string.
-            if error_message.chars().last() == Some('\0') {
-                error_message.pop();
-            }
-
             return Err(ShaderError::CompilationError {
                 shader_type: match shader_type {
                     GL_VERTEX_SHADER => ShaderType::Vertex,
@@ -1431,7 +1426,7 @@ pub struct PipelineParams {
     /// Color (RGB) blend function. If None - blending will be disabled for this pipeline.
     /// Usual use case to get alpha-blending:
     ///```
-    ///# use miniquad::{PipelineParams, BlendState, BlendValue, BlendFactor, Equation};
+    ///# use orom_miniquad::{PipelineParams, BlendState, BlendValue, BlendFactor, Equation};
     ///PipelineParams {
     ///    color_blend: Some(BlendState::new(
     ///        Equation::Add,
@@ -1447,7 +1442,7 @@ pub struct PipelineParams {
     /// On webgl canvas's resulting alpha channel will be used to blend the whole canvas background.
     /// To avoid modifying only alpha channel, but keep usual transparency:
     ///```
-    ///# use miniquad::{PipelineParams, BlendState, BlendValue, BlendFactor, Equation};
+    ///# use orom_miniquad::{PipelineParams, BlendState, BlendValue, BlendFactor, Equation};
     ///PipelineParams {
     ///    color_blend: Some(BlendState::new(
     ///        Equation::Add,
@@ -1827,7 +1822,7 @@ impl Buffer {
 ///
 /// The query is created using [`ElapsedQuery::new()`] function.
 /// ```
-/// use miniquad::graphics::ElapsedQuery;
+/// use orom_miniquad::graphics::ElapsedQuery;
 /// // initialization
 /// let mut query = ElapsedQuery::new();
 /// ```
@@ -1835,7 +1830,7 @@ impl Buffer {
 /// [`ElapsedQuery::end_query()`]
 ///
 /// ```
-/// # use miniquad::graphics::ElapsedQuery;
+/// # use orom_miniquad::graphics::ElapsedQuery;
 /// # let mut query = ElapsedQuery::new();
 ///
 /// query.begin_query();
@@ -1844,11 +1839,11 @@ impl Buffer {
 /// ```
 ///
 /// Retreival of measured duration is only possible at a later point in time. Often a frame or
-/// couple frames later. Measurement latency can especially be high on WASM/WebGL target.
+/// couple frames later.
 ///
 /// ```
 /// // couple frames later:
-/// # use miniquad::graphics::ElapsedQuery;
+/// # use orom_miniquad::graphics::ElapsedQuery;
 /// # let mut query = ElapsedQuery::new();
 /// # query.begin_query();
 /// # query.end_query();
@@ -1861,7 +1856,7 @@ impl Buffer {
 /// And during finalization:
 /// ```
 /// // clean-up
-/// # use miniquad::graphics::ElapsedQuery;
+/// # use orom_miniquad::graphics::ElapsedQuery;
 /// # let mut query = ElapsedQuery::new();
 /// # query.begin_query();
 /// # query.end_query();

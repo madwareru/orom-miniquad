@@ -330,9 +330,6 @@ extern "C" {
     pub fn sapp_macos_get_window() -> *const ::std::os::raw::c_void;
 }
 extern "C" {
-    pub fn sapp_ios_get_window() -> *const ::std::os::raw::c_void;
-}
-extern "C" {
     pub fn sapp_d3d11_get_device() -> *const ::std::os::raw::c_void;
 }
 extern "C" {
@@ -346,7 +343,4 @@ extern "C" {
 }
 extern "C" {
     pub fn sapp_win32_get_hwnd() -> *const ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn sapp_android_get_native_activity() -> *const ::std::os::raw::c_void;
 }

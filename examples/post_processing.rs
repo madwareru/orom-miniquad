@@ -1,4 +1,4 @@
-use miniquad::*;
+use orom_miniquad::*;
 
 use glam::{vec3, Mat4};
 
@@ -241,13 +241,13 @@ impl EventHandler for Stage {
 }
 
 fn main() {
-    miniquad::start(conf::Conf::default(), |mut ctx| {
+    orom_miniquad::start(conf::Conf::default(), |mut ctx| {
         UserData::owning(Stage::new(&mut ctx), ctx)
     });
 }
 
 mod post_processing_shader {
-    use miniquad::*;
+    use orom_miniquad::*;
 
     pub const VERTEX: &str = r#"#version 100
     attribute vec2 pos;
@@ -302,7 +302,7 @@ mod post_processing_shader {
 }
 
 mod offscreen_shader {
-    use miniquad::*;
+    use orom_miniquad::*;
 
     pub const VERTEX: &str = r#"#version 100
     attribute vec4 pos;
