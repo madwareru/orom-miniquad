@@ -19,6 +19,7 @@ pub mod conf;
 mod event;
 pub mod fs;
 pub mod graphics;
+pub mod egui_integration;
 
 pub use event::*;
 

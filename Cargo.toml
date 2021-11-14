@@ -1,6 +1,6 @@
 [package]
 name = "orom-miniquad"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["madwareru <madware.ru@gmail.com>"]
 edition = "2018"
 license = "MIT/Apache-2.0"
@@ -19,9 +19,14 @@ sapp-linux = { path ="./native/sapp-linux", version = "=0.1.13" }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 sapp-darwin = { path = "./native/sapp-darwin", version = "=0.1.6" }
+copypasta = "0.7"
 
 [target.'cfg(not(any(target_os="linux", target_os="macos", windows)))'.dependencies]
 sapp-dummy = { path ="./native/sapp-dummy", version = "=0.1.5" }
+
+[dependencies]
+egui = "0.13.0"
+quad-url = "0.1.0"
 
 [dev-dependencies]
 glam = {version = "0.14", features = ["scalar-math"] }
