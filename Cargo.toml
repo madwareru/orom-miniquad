@@ -1,6 +1,6 @@
 [package]
 name = "orom-miniquad"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["madwareru <madware.ru@gmail.com>"]
 edition = "2018"
 license = "MIT/Apache-2.0"
@@ -25,7 +25,7 @@ copypasta = "0.7"
 sapp-dummy = { path ="./native/sapp-dummy", version = "=0.1.5" }
 
 [dependencies]
-egui = "0.13.0"
+egui = "0.15"
 quad-url = "0.1.0"
 
 [dev-dependencies]
