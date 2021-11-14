@@ -8,7 +8,7 @@ mod buffer_impl;
 
 use crate::sapp::*;
 
-pub use texture::{FilterMode, Texture, TextureAccess, TextureFormat, TextureParams, TextureWrap};
+pub use texture::{FilterMode, Texture, TextureAccess, TextureFormat, TextureParams, TextureWrap, TextureKind};
 pub(crate) use shader_impl::{ShaderInternal};
 pub use shader_impl::{Shader, ShaderMeta, ShaderImage, ShaderUniform, ShaderType, ShaderError, load_shader};
 pub use types_impl::{

@@ -1,6 +1,6 @@
 [package]
 name = "orom-miniquad"
-version = "0.3.1"
+version = "0.4.0"
 authors = ["madwareru <madware.ru@gmail.com>"]
 edition = "2018"
 license = "MIT/Apache-2.0"

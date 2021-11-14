@@ -79,7 +79,9 @@ impl Painter {
                 filter: crate::FilterMode::Linear,
                 width: texture.width as _,
                 height: texture.height as _,
+                depth: 1
             },
+            crate::graphics::TextureKind::Texture2D
         );
     }
 
