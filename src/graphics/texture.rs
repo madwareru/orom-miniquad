@@ -234,6 +234,7 @@ impl Texture {
 
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, params.wrap as i32);
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, params.wrap as i32);
+                    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, params.wrap as i32);
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, params.filter as i32);
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, params.filter as i32);
                 },
@@ -256,6 +257,7 @@ impl Texture {
 
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, params.wrap as i32);
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, params.wrap as i32);
+                    glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, params.wrap as i32);
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, params.filter as i32);
                     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, params.filter as i32);
                 }
